@@ -11,18 +11,10 @@ class Program
 
     static void Main()
     {
-        //using(var connection = new SqliteConnection(connectionstring))
-        //{
-        //    using (var command = connection.CreateCommand())
-        //    {
-        //        connection.Open();
-        //        command.CommandText =
-        //            @"CREATE TABLE IF NOT EXISTS coding_tracker (Id INTEGER PRIMARY KEY AUTOINCREMENT, Date TEXT, Duration TEXT)";
-        //        command.ExecuteNonQuery();
-        //    }
-        //}
-
         CreateDB createDB = new();
         createDB.CreateTable(connectionstring);
+
+        UserInput input = new UserInput();
+        input.GetUserInput();
     }
 }
