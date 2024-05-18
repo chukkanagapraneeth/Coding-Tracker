@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Coding-Tracker": {
+      "commandName": "Project",
+      "workingDirectory": "D:\\CSharpProjs\\Coding-Tracker\\Coding-Tracker\\"
+    }
+  }
+}
