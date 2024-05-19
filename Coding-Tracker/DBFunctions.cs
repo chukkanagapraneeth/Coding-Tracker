@@ -72,11 +72,35 @@ namespace Coding_Tracker
         }
         public void EditRecord()
         {
-            Console.WriteLine("Edited the records");
+            Console.WriteLine("Please enter the id which you want to edit");
+            string ID = Console.ReadLine();
+
+            Console.WriteLine("Please inset starttime");
+            string StartTime = Console.ReadLine();
+
+            Console.WriteLine("Please inset endtime");
+            string EndTime = Console.ReadLine();
+
+            string Duration = Convert.ToString((Convert.ToDateTime(EndTime) - Convert.ToDateTime(StartTime)).TotalMinutes);
+
+
+            using (var connection = new SqliteConnection(connectionstring))
+            {
+                using(var command = connection.CreateCommand())
+                {
+                    connection.Open();
+                    command.CommandText =
+                        $"UPDATE coding_tracker SET StartTime = '{StartTime}', EndTime = '{EndTime}', Duration = '{Duration}' WHERE Id = {ID}";
+
+                    command.ExecuteNonQuery();                    
+                }
+            }
         }
         public void DeleteRecord()
         {
             Console.WriteLine("Deleted the records");
         }
+
+
     }
 }
