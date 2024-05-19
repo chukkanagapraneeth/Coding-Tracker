@@ -75,7 +75,7 @@ namespace Coding_Tracker
             Console.WriteLine("Please enter the id which you want to edit");
             string ID = Console.ReadLine();
 
-            Console.WriteLine("Please inset starttime");
+            Console.WriteLine("Please insert starttime");
             string StartTime = Console.ReadLine();
 
             Console.WriteLine("Please inset endtime");
@@ -98,7 +98,19 @@ namespace Coding_Tracker
         }
         public void DeleteRecord()
         {
-            Console.WriteLine("Deleted the records");
+            Console.WriteLine("Please enter the Id you want to delete");
+            string Id = Console.ReadLine();
+
+            using (var connection = new SqliteConnection(connectionstring))
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    connection.Open();
+                    command.CommandText =
+                        $"DELETE FROM coding_tracker WHERE Id = {Id}";
+                    command.ExecuteNonQuery();
+                }
+            }
         }
 
 
