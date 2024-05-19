@@ -17,7 +17,7 @@ namespace Coding_Tracker
                 {
                     connection.Open();
                     command.CommandText =
-                        @"CREATE TABLE IF NOT EXISTS coding_tracker (Id INTEGER PRIMARY KEY AUTOINCREMENT, Date TEXT, Duration TEXT)";
+                        @"CREATE TABLE IF NOT EXISTS coding_tracker (Id INTEGER PRIMARY KEY AUTOINCREMENT, StartTime TEXT, EndTime TEXT, Duration TEXT)";
                     command.ExecuteNonQuery();
                 }
             }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,7 +17,7 @@ namespace Coding_Tracker
             bool stop = false;
             while(!stop)
             {
-                Console.WriteLine("Main Meny");
+                Console.WriteLine("Main Menu");
                 Console.WriteLine("press 0 to exit");
                 Console.WriteLine("press 1 to view all records");
                 Console.WriteLine("press 2 to to insert a record");
