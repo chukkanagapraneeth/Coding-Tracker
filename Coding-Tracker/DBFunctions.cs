@@ -7,6 +7,9 @@ using Spectre.Console;
 using Microsoft.Data.Sqlite;
 using Coding_Tracker.Models;
 using System.Configuration;
+using Dapper;
+
+//USING DAPPER FOR CRUD
 
 namespace Coding_Tracker
 {
@@ -19,32 +22,9 @@ namespace Coding_Tracker
 
             using(var connection = new SqliteConnection(connectionstring))
             {
-                using(var command = connection.CreateCommand())
-                {
-                    connection.Open();
-                    command.CommandText =
-                        @"SELECT * FROM coding_tracker";
-                    using(var  reader = command.ExecuteReader())
-                    {
-                        if(reader.HasRows)
-                        {
-                            while (reader.Read())
-                            {
-                                items.Add(new CodingSession
-                                {
-                                    Id = reader.GetInt32(0),
-                                    StartTime = Convert.ToDateTime(reader.GetString(1)),
-                                    EndTime = Convert.ToDateTime(reader.GetString(2)),
-                                    Duration = reader.GetString(3)
-                                });
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine("No Records found, please insert some.");
-                        }
-                    }
-                }
+
+                string SqlCommand = "SELECT * FROM coding_tracker;";
+                items = connection.Query<CodingSession>(SqlCommand).ToList();
             }
             VisualizationSpectre.ShowTable(items);
             return items;
@@ -61,13 +41,9 @@ namespace Coding_Tracker
 
             using(var connection = new SqliteConnection(connectionstring))
             {
-                using(var command = connection.CreateCommand())
-                {
-                    connection.Open();
-                    command.CommandText =
-                        $"INSERT into coding_tracker(StartTime, EndTime, Duration) VALUES ('{StartTime}','{EndTime}','{Duration}')";
-                    command.ExecuteNonQuery();
-                }
+                var SqlCommand = "INSERT INTO coding_tracker (StartTime, EndTime, Duration) VALUES (@StartTime, @EndTime, @Duration)";
+                var anonObject = new {StartTime =  StartTime, EndTime = EndTime, Duration = Duration};
+                connection.Execute(SqlCommand, anonObject);
             }
         }
         public void EditRecord()
@@ -86,14 +62,9 @@ namespace Coding_Tracker
 
             using (var connection = new SqliteConnection(connectionstring))
             {
-                using(var command = connection.CreateCommand())
-                {
-                    connection.Open();
-                    command.CommandText =
-                        $"UPDATE coding_tracker SET StartTime = '{StartTime}', EndTime = '{EndTime}', Duration = '{Duration}' WHERE Id = {ID}";
-
-                    command.ExecuteNonQuery();                    
-                }
+                var SqlCommand = "UPDATE coding_tracker SET StartTime = @StartTime, EndTime = @EndTime, Duration = @Duration WHERE Id = @Id";
+                var anonObject = new { Id = ID, StartTime = StartTime, EndTime = EndTime, Duration = Duration};
+                connection.Execute(SqlCommand, anonObject);
             }
         }
         public void DeleteRecord()
@@ -103,16 +74,10 @@ namespace Coding_Tracker
 
             using (var connection = new SqliteConnection(connectionstring))
             {
-                using (var command = connection.CreateCommand())
-                {
-                    connection.Open();
-                    command.CommandText =
-                        $"DELETE FROM coding_tracker WHERE Id = {Id}";
-                    command.ExecuteNonQuery();
-                }
+                var SqlCommand = "DELETE FROM coding_tracker WHERE Id = @Id";
+                var anonObj = new { Id = Id };
+                connection.Execute(SqlCommand, anonObj);
             }
         }
-
-
     }
 }
