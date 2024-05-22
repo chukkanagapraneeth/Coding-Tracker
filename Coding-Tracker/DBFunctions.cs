@@ -8,6 +8,7 @@ using Microsoft.Data.Sqlite;
 using Coding_Tracker.Models;
 using System.Configuration;
 using Dapper;
+using System.Globalization;
 
 //USING DAPPER FOR CRUD
 
@@ -31,11 +32,9 @@ namespace Coding_Tracker
         }
         public void InsertRecord()
         {
-            Console.WriteLine("Please inset starttime");
-            string StartTime = Console.ReadLine();
+            string StartTime = GetDateFunc("StartTime");
 
-            Console.WriteLine("Please inset endtime");
-            string EndTime = Console.ReadLine();
+            string EndTime = GetDateFunc("EndTime");
 
             string Duration = Convert.ToString((Convert.ToDateTime(EndTime) - Convert.ToDateTime(StartTime)).TotalMinutes);
 
@@ -51,11 +50,9 @@ namespace Coding_Tracker
             Console.WriteLine("Please enter the id which you want to edit");
             string ID = Console.ReadLine();
 
-            Console.WriteLine("Please insert starttime");
-            string StartTime = Console.ReadLine();
+            string StartTime = GetDateFunc("StartTime");
 
-            Console.WriteLine("Please inset endtime");
-            string EndTime = Console.ReadLine();
+            string EndTime = GetDateFunc("EndTime");
 
             string Duration = Convert.ToString((Convert.ToDateTime(EndTime) - Convert.ToDateTime(StartTime)).TotalMinutes);
 
@@ -78,6 +75,18 @@ namespace Coding_Tracker
                 var anonObj = new { Id = Id };
                 connection.Execute(SqlCommand, anonObj);
             }
+        }
+
+        public string GetDateFunc(string whichdate)
+        {
+            Console.WriteLine($"Please insert the {whichdate}");
+            var inputDate = Console.ReadLine();
+            while (!DateTime.TryParseExact(inputDate, "yyyy-MM-dd HH:mm:ss", CultureInfo.CurrentCulture, DateTimeStyles.None, out _))
+            {
+                Console.WriteLine("Please enter the date in yyyy-MM-dd HH:mm:ss format.");
+                inputDate = Console.ReadLine();
+            }
+            return inputDate;
         }
     }
 }
