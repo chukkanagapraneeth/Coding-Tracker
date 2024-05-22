@@ -36,6 +36,12 @@ namespace Coding_Tracker
 
             string EndTime = GetDateFunc("EndTime");
 
+            while(!(Convert.ToDateTime(StartTime) < Convert.ToDateTime(EndTime)))
+            {
+                Console.WriteLine("End Time can not be older than Start Time. Please re-enter the End Time accordingly.");
+                EndTime = GetDateFunc("EndTime");
+            }
+
             string Duration = Convert.ToString((Convert.ToDateTime(EndTime) - Convert.ToDateTime(StartTime)).TotalMinutes);
 
             using(var connection = new SqliteConnection(connectionstring))
@@ -53,6 +59,12 @@ namespace Coding_Tracker
             string StartTime = GetDateFunc("StartTime");
 
             string EndTime = GetDateFunc("EndTime");
+
+            while (!(Convert.ToDateTime(StartTime) < Convert.ToDateTime(EndTime)))
+            {
+                Console.WriteLine("End Time can not be older than Start Time. Please re-enter the End Time accordingly.");
+                EndTime = GetDateFunc("EndTime");
+            }
 
             string Duration = Convert.ToString((Convert.ToDateTime(EndTime) - Convert.ToDateTime(StartTime)).TotalMinutes);
 
