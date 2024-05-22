@@ -98,6 +98,7 @@ namespace Coding_Tracker
                 Console.WriteLine("Please enter the date in yyyy-MM-dd HH:mm:ss format.");
                 inputDate = Console.ReadLine();
             }
+
             return inputDate;
         }
     }
