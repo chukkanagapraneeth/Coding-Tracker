@@ -56,6 +56,18 @@ namespace Coding_Tracker
             Console.WriteLine("Please enter the id which you want to edit");
             string ID = Console.ReadLine();
 
+            using(var connection = new SqliteConnection(connectionstring))
+            {
+                var sqlcommand = $"SELECT EXISTS (SELECT 1 FROM coding_tracker WHERE Id = {ID})";
+                var result = Convert.ToInt32(connection.ExecuteScalar(sqlcommand));
+                if(result == 0)
+                {
+                    Console.WriteLine("My bruther! The ID doesn't exist. Please enter a valid Id");
+                    connection.Close();
+                    EditRecord();
+                }
+            }
+
             string StartTime = GetDateFunc("StartTime");
 
             string EndTime = GetDateFunc("EndTime");
@@ -83,6 +95,16 @@ namespace Coding_Tracker
 
             using (var connection = new SqliteConnection(connectionstring))
             {
+
+                var sqlcmd = $"SELECT EXISTS (SELECT 1 FROM coding_tracker WHERE Id = {Id})";
+                var result = Convert.ToInt32(connection.ExecuteScalar(sqlcmd));
+                if( result == 0)
+                {
+                    Console.WriteLine("My dear brudda! The Id doesn't exist. Please enter an appropriate Id.");
+                    connection.Close();
+                    DeleteRecord();
+                }
+
                 var SqlCommand = "DELETE FROM coding_tracker WHERE Id = @Id";
                 var anonObj = new { Id = Id };
                 connection.Execute(SqlCommand, anonObj);
