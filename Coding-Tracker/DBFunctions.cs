@@ -54,11 +54,22 @@ namespace Coding_Tracker
         public void EditRecord()
         {
             Console.WriteLine("Please enter the id which you want to edit");
-            string ID = Console.ReadLine();
+            int Id;
+            if(!(int.TryParse(Console.ReadLine(),out Id)))
+            {
+                Console.WriteLine("Please enter a valid number.");
+                EditRecord();
+            }
+
+            if(Id == 0)
+            {
+                UserInput input = new UserInput();
+                input.GetUserInput();
+            }
 
             using(var connection = new SqliteConnection(connectionstring))
             {
-                var sqlcommand = $"SELECT EXISTS (SELECT 1 FROM coding_tracker WHERE Id = {ID})";
+                var sqlcommand = $"SELECT EXISTS (SELECT 1 FROM coding_tracker WHERE Id = {Id})";
                 var result = Convert.ToInt32(connection.ExecuteScalar(sqlcommand));
                 if(result == 0)
                 {
@@ -84,14 +95,26 @@ namespace Coding_Tracker
             using (var connection = new SqliteConnection(connectionstring))
             {
                 var SqlCommand = "UPDATE coding_tracker SET StartTime = @StartTime, EndTime = @EndTime, Duration = @Duration WHERE Id = @Id";
-                var anonObject = new { Id = ID, StartTime = StartTime, EndTime = EndTime, Duration = Duration};
+                var anonObject = new { Id = Id, StartTime = StartTime, EndTime = EndTime, Duration = Duration};
                 connection.Execute(SqlCommand, anonObject);
             }
         }
         public void DeleteRecord()
         {
             Console.WriteLine("Please enter the Id you want to delete");
-            string Id = Console.ReadLine();
+            int Id;
+            if(!(int.TryParse(Console.ReadLine(), out Id)))
+            {
+                Console.WriteLine("Please enter a valid number.");
+                DeleteRecord();
+            }
+
+            if (Id == 0)
+            {
+                UserInput input = new UserInput();
+                input.GetUserInput();
+            }
+
 
             using (var connection = new SqliteConnection(connectionstring))
             {
